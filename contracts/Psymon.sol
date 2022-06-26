@@ -9,7 +9,7 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 contract Psymon is ERC721Enumerable,Ownable,ReentrancyGuard{
 
     uint constant public MAX_SUPPLY = 3801;
-    uint constant public PRICE = 1 ether;
+    uint constant public PRICE = 1e8;
 
     string public PROVENANCE_HASH = "";
     string internal baseURI;
