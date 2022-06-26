@@ -11,7 +11,6 @@
     "@openzeppelin/contracts": "^4.6.0",
     "hardhat-contract-sizer": "^2.5.1",
     "hardhat-gas-reporter": "^1.0.8",
-    "hardhat-spdx-license-identifier": "^2.0.3",
-    "hardhat-tracer": "^1.1.0-rc.5"
+    "hardhat-spdx-license-identifier": "^2.0.3"
   }
 }
