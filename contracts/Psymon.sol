@@ -4,12 +4,14 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-contract Psymon is ERC721Enumerable,Ownable,ReentrancyGuard{
+contract Psymon is ERC721Enumerable,Ownable{
 
     uint constant public MAX_SUPPLY = 3801;
-    uint constant public PRICE = 1e8;
+    uint constant public PRICE = 1 ether;
+
+    uint public OWNER_LIMIT = 200;
+    uint public OWNER_MINT = 0;
 
     string public PROVENANCE_HASH = "";
     string internal baseURI;
@@ -27,8 +29,14 @@ contract Psymon is ERC721Enumerable,Ownable,ReentrancyGuard{
     mapping(uint=>uint) public reflectiveRetrieved;
     
     constructor() ERC721("PsyMons","PSYMON"){
-        for(uint i=3801;i<4001;i++){
-            _safeMint(msg.sender,i);
+        
+    }
+
+    function ownerMint(uint _amount) external onlyOwner{
+        require(OWNER_MINT + _amount <= OWNER_LIMIT,"limit reached");
+        for(uint i=0;i<_amount;i++){
+            _safeMint(msg.sender,MAX_SUPPLY+OWNER_MINT+i);
+            OWNER_MINT++;
         }
     }
 
@@ -46,12 +54,12 @@ contract Psymon is ERC721Enumerable,Ownable,ReentrancyGuard{
     }
 
     //Owner modifiable base URI (to switch between api and folder hash)
-    function setBaseURI(string memory newBaseURI) external onlyOwner(){
+    function setBaseURI(string memory newBaseURI) external onlyOwner{
         baseURI = newBaseURI;
     }
 
     //Owner function for retrieving non reward balance
-    function retrieveBalance() external onlyOwner nonReentrant{
+    function retrieveBalance() external onlyOwner{
         uint amount = address(this).balance;
         payable(owner()).transfer(amount);
     }
